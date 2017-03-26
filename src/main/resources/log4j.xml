@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
+	debug="false">
+	<!-- 注意这里的大小写，配置文件对大小写敏感，主要是后面对该name的引用 -->
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%-5p] %d{yyyy-MM-dd HH:mm:ss.SSS} ->> %m%n" />
+		</layout>
+	</appender>
+	
+	<appender name="DEBUG" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="logs/debug.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%-5p] [%d{yyyy-MM-dd HH:mm:ss.SSS}] ->> %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter"> 
+			<param name="LevelMin" value="DEBUG" /> 
+			<param name="LevelMax" value="DEBUG" /> 
+		</filter>
+	</appender>
+	
+	<appender name="INFO" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="logs/info.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd'.log'" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%-5p] [%d{yyyy-MM-dd HH:mm:ss.SSS}] ->> %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter"> 
+			<param name="LevelMin" value="INFO" /> 
+			<param name="LevelMax" value="INFO" /> 
+		</filter>
+	</appender>
+	
+	<!-- druid数据源配置打印日志 start -->
+	<logger name="druid.sql">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="druid.sql.DataSource">
+		<level value="INFO" />
+	</logger>
+	<logger name="druid.sql.Connection">
+		<level value="INFO" />
+	</logger>
+	<logger name="druid.sql.Statement">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="druid.sql.ResultSet">
+		<level value="INFO" />
+	</logger>
+	
+	<root>
+		<level value="INFO" />
+		<!-- 注意ref中的大小写，就是前面配置的appender的name -->
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="DEBUG"/>
+		<appender-ref ref="INFO"/>
+	</root>
+</log4j:configuration>

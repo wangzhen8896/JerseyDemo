@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzsuper.jersey.dao.NewscontentMapper">
+  <resultMap id="BaseResultMap" type="com.wzsuper.jersey.bo.Newscontent">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="othretitle" jdbcType="VARCHAR" property="othretitle" />
+    <result column="imgtitle" jdbcType="VARCHAR" property="imgtitle" />
+    <result column="importcontent" jdbcType="VARCHAR" property="importcontent" />
+    <result column="newskeyword" jdbcType="VARCHAR" property="newskeyword" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="newsorder" jdbcType="VARCHAR" property="newsorder" />
+    <result column="isopen" jdbcType="VARCHAR" property="isopen" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="newfrom" jdbcType="VARCHAR" property="newfrom" />
+    <result column="newtype" jdbcType="VARCHAR" property="newtype" />
+    <result column="ishot" jdbcType="VARCHAR" property="ishot" />
+    <result column="isconmments" jdbcType="VARCHAR" property="isconmments" />
+    <result column="deepcount" jdbcType="INTEGER" property="deepcount" />
+    <result column="newsremark" jdbcType="VARCHAR" property="newsremark" />
+    <result column="newcreater" jdbcType="VARCHAR" property="newcreater" />
+    <result column="listtitle" jdbcType="VARCHAR" property="listtitle" />
+    <result column="areacode" jdbcType="VARCHAR" property="areacode" />
+    <result column="permisionman" jdbcType="VARCHAR" property="permisionman" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="struserid" jdbcType="VARCHAR" property="struserid" />
+    <result column="documentnumber" jdbcType="VARCHAR" property="documentnumber" />
+    <result column="publisher" jdbcType="VARCHAR" property="publisher" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="secretlevel" jdbcType="VARCHAR" property="secretlevel" />
+    <result column="urgent" jdbcType="VARCHAR" property="urgent" />
+    <result column="importantlevel" jdbcType="VARCHAR" property="importantlevel" />
+    <result column="usergourpid" jdbcType="VARCHAR" property="usergourpid" />
+    <result column="issecret" jdbcType="INTEGER" property="issecret" />
+    <result column="docs" jdbcType="VARCHAR" property="docs" />
+    <result column="linkuri" jdbcType="VARCHAR" property="linkuri" />
+    <result column="cloudappid" jdbcType="INTEGER" property="cloudappid" />
+    <result column="publishurl" jdbcType="VARCHAR" property="publishurl" />
+    <result column="newtypetext" jdbcType="VARCHAR" property="newtypetext" />
+    <result column="website" jdbcType="VARCHAR" property="website" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="updater" jdbcType="VARCHAR" property="updater" />
+    <result column="areaid" jdbcType="NUMERIC" property="areaid" />
+    <result column="newstext" jdbcType="VARCHAR" property="newstext" />
+    <result column="isdelete" jdbcType="VARCHAR" property="isdelete" />
+    <result column="praisenum" jdbcType="INTEGER" property="praisenum" />
+    <result column="reviewnum" jdbcType="INTEGER" property="reviewnum" />
+    <result column="classifyparentid" jdbcType="VARCHAR" property="classifyparentid" />
+    <result column="classifyparentname" jdbcType="VARCHAR" property="classifyparentname" />
+    <result column="classifynodeid" jdbcType="VARCHAR" property="classifynodeid" />
+    <result column="classifynodename" jdbcType="VARCHAR" property="classifynodename" />
+    <result column="visitnum" jdbcType="INTEGER" property="visitnum" />
+    <result column="newcontent_fsi" jdbcType="OTHER" property="newcontentFsi" />
+    <result column="cdnurl" jdbcType="VARCHAR" property="cdnurl" />
+    <result column="markdown" jdbcType="VARCHAR" property="markdown" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.wzsuper.jersey.bo.NewscontentWithBLOBs">
+    <result column="newcontent" jdbcType="BINARY" property="newcontent" />
+    <result column="markdowns" jdbcType="BINARY" property="markdowns" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, title, othretitle, imgtitle, importcontent, newskeyword, createtime, updatetime, 
+    newsorder, isopen, author, newfrom, newtype, ishot, isconmments, deepcount, newsremark, 
+    newcreater, listtitle, areacode, permisionman, status, struserid, documentnumber, 
+    publisher, category, secretlevel, urgent, importantlevel, usergourpid, issecret, 
+    docs, linkuri, cloudappid, publishurl, newtypetext, website, creator, updater, areaid, 
+    newstext, isdelete, praisenum, reviewnum, classifyparentid, classifyparentname, classifynodeid, 
+    classifynodename, visitnum, newcontent_fsi, cdnurl, markdown
+  </sql>
+  <sql id="Blob_Column_List">
+    newcontent, markdowns
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from newscontent
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectNewsList" resultType="com.wzsuper.jersey.bo.Newscontent" parameterType="java.lang.String">
+    select * from newscontent where isdelete = '0'
+    <if test="classify != null and classify != 'null' and classify != ''"> and classifyparentid = {#classify, jdbcType=VARCHAR}  </if>
+    order by createtime desc
+  </select>
+
+  <insert id="insert" parameterType="com.wzsuper.jersey.bo.Newscontent" >
+    insert into newscontent (id, title, othretitle,
+      imgtitle, importcontent, newskeyword,
+      createtime, updatetime, newsorder,
+      isopen, author, newfrom,
+      newtype, ishot, isconmments,
+      deepcount, newsremark, newcreater,
+      listtitle, areacode, permisionman,
+      status, struserid, documentnumber,
+      publisher, category, secretlevel,
+      urgent, importantlevel, usergourpid,
+      issecret, docs, linkuri,
+      cloudappid, publishurl, newtypetext,
+      website, creator, updater,
+      areaid, newstext, isdelete,
+      praisenum, reviewnum, classifyparentid,
+      classifyparentname, classifynodeid, classifynodename,
+      visitnum, newcontent_fsi, cdnurl,
+      markdown
+      )
+    values (#{id,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{othretitle,jdbcType=VARCHAR},
+      #{imgtitle,jdbcType=VARCHAR}, #{importcontent,jdbcType=VARCHAR}, #{newskeyword,jdbcType=VARCHAR},
+      #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}, #{newsorder,jdbcType=VARCHAR},
+      #{isopen,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, #{newfrom,jdbcType=VARCHAR},
+      #{newtype,jdbcType=VARCHAR}, #{ishot,jdbcType=VARCHAR}, #{isconmments,jdbcType=VARCHAR},
+      #{deepcount,jdbcType=INTEGER}, #{newsremark,jdbcType=VARCHAR}, #{newcreater,jdbcType=VARCHAR},
+      #{listtitle,jdbcType=VARCHAR}, #{areacode,jdbcType=VARCHAR}, #{permisionman,jdbcType=VARCHAR},
+      #{status,jdbcType=INTEGER}, #{struserid,jdbcType=VARCHAR}, #{documentnumber,jdbcType=VARCHAR},
+      #{publisher,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, #{secretlevel,jdbcType=VARCHAR},
+      #{urgent,jdbcType=VARCHAR}, #{importantlevel,jdbcType=VARCHAR}, #{usergourpid,jdbcType=VARCHAR},
+      #{issecret,jdbcType=INTEGER}, #{docs,jdbcType=VARCHAR}, #{linkuri,jdbcType=VARCHAR},
+      #{cloudappid,jdbcType=INTEGER}, #{publishurl,jdbcType=VARCHAR}, #{newtypetext,jdbcType=VARCHAR},
+      #{website,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{updater,jdbcType=VARCHAR},
+      #{areaid,jdbcType=NUMERIC}, #{newstext,jdbcType=VARCHAR}, #{isdelete,jdbcType=VARCHAR},
+      #{praisenum,jdbcType=INTEGER}, #{reviewnum,jdbcType=INTEGER}, #{classifyparentid,jdbcType=VARCHAR},
+      #{classifyparentname,jdbcType=VARCHAR}, #{classifynodeid,jdbcType=VARCHAR}, #{classifynodename,jdbcType=VARCHAR},
+      #{visitnum,jdbcType=INTEGER}, #{newcontentFsi,jdbcType=OTHER}, #{cdnurl,jdbcType=VARCHAR},
+      #{markdown,jdbcType=VARCHAR}
+      )
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.wzsuper.jersey.bo.Newscontent" >
+    update newscontent
+    set title = #{title,jdbcType=VARCHAR},
+    othretitle = #{othretitle,jdbcType=VARCHAR},
+    imgtitle = #{imgtitle,jdbcType=VARCHAR},
+    importcontent = #{importcontent,jdbcType=VARCHAR},
+    newskeyword = #{newskeyword,jdbcType=VARCHAR},
+    createtime = #{createtime,jdbcType=TIMESTAMP},
+    updatetime = #{updatetime,jdbcType=TIMESTAMP},
+    newsorder = #{newsorder,jdbcType=VARCHAR},
+    isopen = #{isopen,jdbcType=VARCHAR},
+    author = #{author,jdbcType=VARCHAR},
+    newfrom = #{newfrom,jdbcType=VARCHAR},
+    newtype = #{newtype,jdbcType=VARCHAR},
+    ishot = #{ishot,jdbcType=VARCHAR},
+    isconmments = #{isconmments,jdbcType=VARCHAR},
+    deepcount = #{deepcount,jdbcType=INTEGER},
+    newsremark = #{newsremark,jdbcType=VARCHAR},
+    newcreater = #{newcreater,jdbcType=VARCHAR},
+    listtitle = #{listtitle,jdbcType=VARCHAR},
+    areacode = #{areacode,jdbcType=VARCHAR},
+    permisionman = #{permisionman,jdbcType=VARCHAR},
+    status = #{status,jdbcType=INTEGER},
+    struserid = #{struserid,jdbcType=VARCHAR},
+    documentnumber = #{documentnumber,jdbcType=VARCHAR},
+    publisher = #{publisher,jdbcType=VARCHAR},
+    category = #{category,jdbcType=VARCHAR},
+    secretlevel = #{secretlevel,jdbcType=VARCHAR},
+    urgent = #{urgent,jdbcType=VARCHAR},
+    importantlevel = #{importantlevel,jdbcType=VARCHAR},
+    usergourpid = #{usergourpid,jdbcType=VARCHAR},
+    issecret = #{issecret,jdbcType=INTEGER},
+    docs = #{docs,jdbcType=VARCHAR},
+    linkuri = #{linkuri,jdbcType=VARCHAR},
+    cloudappid = #{cloudappid,jdbcType=INTEGER},
+    publishurl = #{publishurl,jdbcType=VARCHAR},
+    newtypetext = #{newtypetext,jdbcType=VARCHAR},
+    website = #{website,jdbcType=VARCHAR},
+    creator = #{creator,jdbcType=VARCHAR},
+    updater = #{updater,jdbcType=VARCHAR},
+    areaid = #{areaid,jdbcType=NUMERIC},
+    newstext = #{newstext,jdbcType=VARCHAR},
+    isdelete = #{isdelete,jdbcType=VARCHAR},
+    praisenum = #{praisenum,jdbcType=INTEGER},
+    reviewnum = #{reviewnum,jdbcType=INTEGER},
+    classifyparentid = #{classifyparentid,jdbcType=VARCHAR},
+    classifyparentname = #{classifyparentname,jdbcType=VARCHAR},
+    classifynodeid = #{classifynodeid,jdbcType=VARCHAR},
+    classifynodename = #{classifynodename,jdbcType=VARCHAR},
+    visitnum = #{visitnum,jdbcType=INTEGER},
+    newcontent_fsi = #{newcontentFsi,jdbcType=OTHER},
+    cdnurl = #{cdnurl,jdbcType=VARCHAR},
+    markdown = #{markdown,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

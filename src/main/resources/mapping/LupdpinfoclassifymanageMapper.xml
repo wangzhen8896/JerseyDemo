@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wzsuper.jersey.dao.LupdpinfoclassifymanageMapper" >
+  <resultMap id="BaseResultMap" type="com.wzsuper.jersey.bo.Lupdpinfoclassifymanage" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="cloudappid" property="cloudappid" jdbcType="INTEGER" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="updater" property="updater" jdbcType="VARCHAR" />
+    <result column="updatetime" property="updatetime" jdbcType="TIMESTAMP" />
+    <result column="infoclassify" property="infoclassify" jdbcType="VARCHAR" />
+    <result column="parentvalue" property="parentvalue" jdbcType="VARCHAR" />
+    <result column="rank" property="rank" jdbcType="VARCHAR" />
+    <result column="isdelete" property="isdelete" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cloudappid, creator, createtime, updater, updatetime, infoclassify, parentvalue, 
+    rank, isdelete
+  </sql>
+
+  <select id="selectNewsClassifyList" resultType="com.wzsuper.jersey.bo.Lupdpinfoclassifymanage" >
+   select id,infoclassify,parentvalue from lupdpinfoclassifymanage where parentvalue='122sdfds7ffgdsg3dsf34fd2' order by rank desc
+  </select>
+
+</mapper>

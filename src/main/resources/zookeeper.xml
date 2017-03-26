@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<!-- <bean id="pollingConnectionManager"
+		class="org.apache.http.impl.conn.PoolingHttpClientConnectionManager">
+		<property name="maxTotal" value="10" />
+		<property name="defaultMaxPerRoute" value="5" />
+	</bean>
+
+	<bean id="httpClientBuilder" class="org.apache.http.impl.client.HttpClientBuilder"
+		factory-method="create">
+		<property name="connectionManager" ref="pollingConnectionManager" />
+	</bean>
+
+	<bean id="httpClient" factory-bean="httpClientBuilder"
+		factory-method="build" />
+
+	
+	<bean id="clientHttpRequestFactory"
+		class="org.springframework.http.client.HttpComponentsClientHttpRequestFactory">
+		<constructor-arg ref="httpClient" />
+		<property name="connectTimeout" value="30000" />
+		<property name="readTimeout" value="30000" />
+	</bean> -->
+
+
+
+
+	<!-- zookpper客户端配置  -->
+	<bean id="zookeeper" class="com.wzsuper.JerseyAPI.zookeeper.ZookeeperFactory"
+                 destroy-method="close">
+    <property name="zkHosts" value="192.168.7.216:4181,192.168.7.216:4182,192.168.7.216:4183" />
+    <!-- <property name="zkHosts" value="192.168.3.25:2181,192.168.3.25:2182,192.168.3.25:2183" />   -->
+    <property name="namespace" value="JerseyDemo" />
+    <property name="connectionTimeout" value="3000" />
+    <property name="sessionTimeout" value="3000" />
+    <property name="singleton" value="true" />
+</bean>
+
+	<!-- 服务自动注册配置 -->
+	<bean id="serviceRegistry" class="com.wzsuper.JerseyAPI.Server.discovery.ServiceRegistry">
+		<property name="zookeeper" value="true"/>
+		<property name="zkClient" ref="zookeeper"/>
+	</bean>
+	
+	 <!-- 客户端服务发现配置  -->
+	<bean id="JerseyDemoService" class="com.wzsuper.JerseyAPI.Server.discovery.ServiceProvider">
+	<property name="zkClient" ref="zookeeper"/>
+</bean>
+
+	<bean id="httpClientManager" class="com.wzsuper.JerseyAPI.Server.HttpClientManager"></bean>
+	<bean id="jerseyDemo" class="com.wzsuper.JerseyAPI.Server.RemoteServerProxy">
+		<property name="serviceProvider" ref="JerseyDemoService"/>
+		<property name="httpClientManager" ref="httpClientManager"/>
+	</bean>
+	
+</beans>

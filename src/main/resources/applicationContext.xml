@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<context:component-scan base-package="com.wzsuper"/>
+
+	<context:property-placeholder location="classpath:global.properties"/>
+
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+
+	<bean id="logInterceptor" class="com.wzsuper.JerseyAPI.aop.LogInterceptor" scope="request">
+		<!--开启消息队列记录接口日志-->
+		<!--<property name="amqpTemplate" ref="amqpTemplate"/>
+		<property name="routingkey" value="logQueuekey"/>-->
+	</bean>
+	<aop:config>
+		<aop:pointcut id="log" expression="execution(* com.wzsuper.jersey.services..*Service.*(..))" />
+		<aop:aspect id="logAspect" ref="logInterceptor">
+			<aop:before method="befor" pointcut-ref="log" />
+			<aop:after method="after" pointcut-ref="log" />
+			<aop:around method="around" pointcut-ref="log" />
+			<aop:after-throwing method="AfterThrowing" pointcut-ref="log" throwing="e"/>
+			<aop:after-returning method="AfterReturning" pointcut-ref="log"/>
+		</aop:aspect>
+	</aop:config>
+	
+	<import resource="DB.xml"/>
+	<!--<import resource="zookeeper.xml"/>
+	<import resource="rabbitMQ.xml"/>-->
+</beans>
